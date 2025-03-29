@@ -7,7 +7,10 @@ class Btn(tkinter.Button):
         self.pos_y = y
         self.visited = False
         self.distance = float('inf')
+        self.parent = None
 
+    def __lt__(self, other):
+        return self.distance < other.distance
 
 
 class Djiktras:
@@ -60,8 +63,7 @@ class Djiktras:
     def make_water(self, button):
         curr = button['bg']
         button.config(bg='blue' if curr=='brown' else 'brown')
-        # self.refresh_matrix()
-        # self.print_matrix()
+
 
     def assign_click(self, button):
         if self.cmd==0:
@@ -97,7 +99,15 @@ class Djiktras:
 
 
     def get_djiktras(self):
-        pass
+        algo = Algo(self.buttons, self.start_cords, self.end_cords, self.window)
+
+        start_x, start_y = self.start_cords
+        start_btn = self.buttons[start_x][start_y]
+        start_btn.distance = 0
+        start_btn.visited = False
+
+        algo.visit_points(start_btn)
+
 
 dj = Djiktras()
 
